@@ -54,6 +54,7 @@ export default function AuthForm({ type } : Props){
                 router.push('/sign-in')
             }
         }
+        
         catch(e){
             console.error(e);
             toast.error(`There was an error: ${e}`)
