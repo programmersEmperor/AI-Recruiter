@@ -48,7 +48,7 @@ export default function AuthForm({ type } : Props){
             console.log('name', values.name);
             console.log('email',  values.email);
             console.log('password', values.password);
-            
+
             if(isSignIn){
                 toast.success('Sign in successfully')
                 router.push('/')
