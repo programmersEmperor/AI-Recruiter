@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import DisplayTechStack from './displayTechStack';
 
 const InterviewCard = ({
     interviewId, 
@@ -42,7 +43,7 @@ const InterviewCard = ({
                 </p>
             </div>
             <div className="flex justify-between">
-                <p>Tech Icons</p>
+                <DisplayTechStack techStack={techstack}/>
                 <Button className='btn-primary'>
                     <Link href={
                         feedback 
