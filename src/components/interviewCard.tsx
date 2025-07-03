@@ -1,6 +1,8 @@
 import { getRandomInterviewCover } from '@/lib/utils';
 import dayjs from 'dayjs'
 import Image from 'next/image';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
 const InterviewCard = ({
     interviewId, 
@@ -22,6 +24,38 @@ const InterviewCard = ({
                     <p className='badge-text'>{normalizedType}</p>
                 </div>
                 <Image src={getRandomInterviewCover()} className='rounded-full object-fit size-[90px]' alt="interview cover" width={90} height={90}  />
+                <h3 className='capitalize mt-5'>
+                    {role} Interview
+                </h3>
+                <div className="flex gap-5 mt-3 ">
+                    <div className="flex gap-2">
+                        <Image src="/calendar.svg" alt="Calendar" width={22} height={22} />
+                        <p>{formattedDate}</p>
+                    </div>
+                    <div className="flex gap-2">
+                        <Image src="/star.svg" alt="Star" width={22} height={22} />
+                        <p>{feedback?.totalScore || '___'}/100</p>
+                    </div>
+                </div>
+                <p className='line-clamp-2 mt-5'>
+                    {feedback?.finalAssessment || 'You havn&apos;t taken the interview yet. Take it now to imporve your skills'}
+                </p>
+            </div>
+            <div className="flex justify-between">
+                <p>Tech Icons</p>
+                <Button className='btn-primary'>
+                    <Link href={
+                        feedback 
+                        ? `/interview/${interviewId}/feedback` 
+                        : `/interview/${interviewId}`
+                    }>
+                        {
+                            feedback
+                            ? `Check Feedback`
+                            : `Start Interview`
+                        }
+                    </Link>
+                </Button>
             </div>
         </div>
     </div>
