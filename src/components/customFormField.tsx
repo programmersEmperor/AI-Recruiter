@@ -22,6 +22,7 @@ export default function CustomFormField<T extends FieldValues>({control, name, l
             <Input 
                 className="input"
                 placeholder={placeholder}
+                type={type}
                 {...field}
             />
         </FormControl>

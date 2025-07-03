@@ -45,6 +45,10 @@ export default function AuthForm({ type } : Props){
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         try{
+            console.log('name', values.name);
+            console.log('email',  values.email);
+            console.log('password', values.password);
+            
             if(isSignIn){
                 toast.success('Sign in successfully')
                 router.push('/')
