@@ -1,8 +1,10 @@
 'use server'; 
 
 import { FirebaseError } from "firebase/app";
-import { db } from "../../../firebase/admin";
+import { db, auth } from "../../../firebase/admin";
+import { cookies } from "next/headers";
 
+const ONE_WEEK = 60 * 60 * 24 * 7; 
 
 export async function signUp ({uid, email, name}: SignUpParams){
     try{
@@ -32,4 +34,21 @@ export async function signUp ({uid, email, name}: SignUpParams){
             message: e.message
         }
     }
+}
+
+export async function setSessionCookie(idToken: string){
+    const cookieStore = await cookies();
+
+    const sessionCookie = await auth.createSessionCookie(idToken, {
+        expiresIn: ONE_WEEK
+    });
+
+
+    cookieStore.set('session', sessionCookie, {
+        maxAge: ONE_WEEK,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        path: "/",
+        sameSite: 'lax'
+    })
 }
