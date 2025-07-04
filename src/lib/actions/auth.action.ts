@@ -18,16 +18,18 @@ export async function signUp ({uid, email, name}: SignUpParams){
         await db.collection('users').doc(uid).set({
             name, email
         })
+
+        return {
+            success: true,
+            message: "Account created succssfully"
+        }
     }
-    catch(e){
+    catch(e: any){
         const firebaseError = e as FirebaseError;
         console.error('Error Creating User', firebaseError);
-        
-        if(firebaseError.code && firebaseError.code === 'auth/email-already-exists'){
-            return {
-                success: false,
-                message: 'This email is already in use'
-            }
+        return {
+            success: false,
+            message: e.message
         }
     }
 }
