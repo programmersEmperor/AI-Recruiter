@@ -27,8 +27,7 @@ export async function signUp ({uid, email, name}: SignUpParams){
         }
     }
     catch(e: any){
-        const firebaseError = e as FirebaseError;
-        console.error('Error Creating User', firebaseError);
+        console.error('Error Creating User', e);
         return {
             success: false,
             message: e.message
@@ -51,4 +50,30 @@ export async function setSessionCookie(idToken: string){
         path: "/",
         sameSite: 'lax'
     })
+}
+
+export async function signIn(params: SignInParams) {
+    const { email, idToken } = params;
+    try {
+        const userRecord = await auth.getUserByEmail(email);
+        if(! userRecord) {
+            return {
+                success: false,
+                message: "User does not exists"
+            }
+        }
+
+        await setSessionCookie(idToken);
+        return {
+            success: true,
+            message: "User exists"
+        }
+        
+    } catch (e: any) {
+        console.error('Error Sign In User', e);
+        return {
+            success: false,
+            message: e.message
+        }
+    }
 }
