@@ -1,3 +1,5 @@
+'use server'; 
+
 import { FirebaseError } from "firebase/app";
 import { db } from "../../../firebase/admin";
 
