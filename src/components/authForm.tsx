@@ -14,7 +14,7 @@ import CustomFormField from "./customFormField"
 import { useRouter } from "next/navigation"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/client"
-import { signUp } from "@/lib/actions/auth.action"
+import { signIn, signUp } from "@/lib/actions/auth.action"
 
 
 
@@ -51,8 +51,28 @@ export default function AuthForm({ type } : Props){
         try{
              
             if(isSignIn){
-                toast.success('Sign in successfully')
-                router.push('/')
+                const { email, password } = values;
+                const userCridentionals = await createUserWithEmailAndPassword(auth, email, password);
+                const idToken = await userCridentionals.user.getIdToken();
+                
+                if(!idToken) {
+                    toast.error('Sign in failed');
+                    return;
+                }
+
+                const result = await signIn({
+                    idToken: idToken,
+                    email
+                });
+
+                if(result.success){
+                    toast.success(result.message)
+                    router.push('/')
+                }
+                else {
+                    toast.error(result.message)
+                }
+                
             }
             else {
                 const { name, email, password } = values;

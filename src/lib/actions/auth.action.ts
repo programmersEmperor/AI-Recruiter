@@ -66,7 +66,7 @@ export async function signIn(params: SignInParams) {
         await setSessionCookie(idToken);
         return {
             success: true,
-            message: "User exists"
+            message: "Sign in successfully"
         }
         
     } catch (e: any) {
