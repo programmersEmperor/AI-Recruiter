@@ -95,9 +95,8 @@ export default function AuthForm({ type } : Props){
                 
             }
         }
-        
         catch(e){
-            console.error(e);
+            // console.error(e);
             toast.error(`There was an error: ${e}`)
         }
     }

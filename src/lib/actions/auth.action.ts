@@ -77,3 +77,38 @@ export async function signIn(params: SignInParams) {
         }
     }
 }
+
+export async function getCurrentUser() : Promise<User | null> {
+    try {
+        const cookieStore = await cookies();
+        const session = cookieStore.get('session')?.value;
+        
+        if(!session){
+            return null;
+        }
+
+        const decodedClaims = await auth.verifySessionCookie(session, true);
+        const userRecord = await db.collection('users').doc(decodedClaims.uid).get();
+        
+        if (!userRecord.exists) {
+            return null;
+        }
+        
+
+        return {
+            ...userRecord.data(),
+            id: userRecord.id
+        } as User
+        
+
+
+
+    } catch(e: any){
+        return null;
+    }
+}
+
+export async function isAuthenticated() {
+    const user = await getCurrentUser();
+    return !!user;
+}
