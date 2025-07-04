@@ -85,8 +85,8 @@ export default function AuthForm({ type } : Props){
                 }) 
 
                 if(result.success){
-                    toast.success(`${result.message}. Please sign in`)
-                    router.push('/sign-in')
+                    toast.success(`${result.message}`)
+                    router.push('/')
                 }
                 else {
                     toast.error(result.message);
