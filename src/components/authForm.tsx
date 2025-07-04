@@ -12,7 +12,7 @@ import Link from "next/link"
 import { toast } from "sonner"
 import CustomFormField from "./customFormField"
 import { useRouter } from "next/navigation"
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/client"
 import { signIn, signUp } from "@/lib/actions/auth.action"
 
@@ -52,7 +52,7 @@ export default function AuthForm({ type } : Props){
              
             if(isSignIn){
                 const { email, password } = values;
-                const userCridentionals = await createUserWithEmailAndPassword(auth, email, password);
+                const userCridentionals = await signInWithEmailAndPassword(auth, email, password);
                 const idToken = await userCridentionals.user.getIdToken();
                 
                 if(!idToken) {
