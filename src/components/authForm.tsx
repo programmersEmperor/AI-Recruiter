@@ -12,6 +12,10 @@ import Link from "next/link"
 import { toast } from "sonner"
 import CustomFormField from "./customFormField"
 import { useRouter } from "next/navigation"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/client"
+import { signUp } from "@/lib/actions/auth.action"
+
 
 
 type Props = {
@@ -43,19 +47,32 @@ export default function AuthForm({ type } : Props){
     })
  
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         try{
-            console.log('name', values.name);
-            console.log('email',  values.email);
-            console.log('password', values.password);
-
+             
             if(isSignIn){
                 toast.success('Sign in successfully')
                 router.push('/')
             }
             else {
-                toast.success('Account created succssfully. Please sign in')
-                router.push('/sign-in')
+                const { name, email, password } = values;
+                const userCridentionals = await createUserWithEmailAndPassword(auth, email, password);
+                const result = await signUp({
+                    uid: userCridentionals.user.uid,
+                    email: email,
+                    name: name!,
+                    password: password
+                }) 
+
+                if(result.success){
+                    toast.success(`${result.message}. Please sign in`)
+                    router.push('/sign-in')
+                }
+                else {
+                    toast.error(result.message);
+                }
+
+                
             }
         }
         
