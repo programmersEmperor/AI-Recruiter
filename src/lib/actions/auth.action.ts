@@ -4,7 +4,7 @@ import { FirebaseError } from "firebase/app";
 import { db, auth } from "../../../firebase/admin";
 import { cookies } from "next/headers";
 
-const ONE_WEEK = 60 * 60 * 24 * 7; 
+const SESSION_DURATION = 60 * 60 * 24 * 7; 
 
 export async function signUp ({uid, email, name}: SignUpParams){
     try{
@@ -39,12 +39,12 @@ export async function setSessionCookie(idToken: string){
     const cookieStore = await cookies();
 
     const sessionCookie = await auth.createSessionCookie(idToken, {
-        expiresIn: ONE_WEEK
+        expiresIn: SESSION_DURATION * 1000,
     });
 
 
     cookieStore.set('session', sessionCookie, {
-        maxAge: ONE_WEEK,
+        maxAge: SESSION_DURATION,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         path: "/",
@@ -89,12 +89,12 @@ export async function getCurrentUser() : Promise<User | null> {
 
         const decodedClaims = await auth.verifySessionCookie(session, true);
         const userRecord = await db.collection('users').doc(decodedClaims.uid).get();
-        
+
+
         if (!userRecord.exists) {
             return null;
         }
         
-
         return {
             ...userRecord.data(),
             id: userRecord.id
