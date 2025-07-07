@@ -75,27 +75,33 @@ export async function getInterviewById(id: string): Promise<Interview | null> {
 export async function getFeedbackByInterviewId(
   params: GetFeedbackByInterviewIdParams
 ): Promise<Feedback | null> {
-  const { interviewId, userId } = params;
+  try {
+    const { interviewId, userId } = params;
 
-  const querySnapshot = await db
-    .collection("feedback")
-    .where("interviewId", "==", interviewId)
-    .where("userId", "==", userId)
-    .limit(1)
-    .get();
+    const querySnapshot = await db
+      .collection("feedback")
+      .where("interviewId", "==", interviewId)
+      .where("userId", "==", userId)
+      .limit(1)
+      .get();
 
-  if (querySnapshot.empty) return null;
+    if (querySnapshot.empty) return null;
 
-  const feedbackDoc = querySnapshot.docs[0];
-  return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
+    const feedbackDoc = querySnapshot.docs[0];
+    return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
+  }
+  catch(e) {
+    return null;
+  }
 }
 
 export async function getLatestInterviews(
   params: GetLatestInterviewsParams
 ): Promise<Interview[] | null> {
-  const { userId, limit = 20 } = params;
+  try {
+    const { userId, limit = 20 } = params;
 
-  const interviews = await db
+    const interviews = await db
     .collection("interviews")
     .orderBy("createdAt", "desc")
     .where("finalized", "==", true)
@@ -103,23 +109,31 @@ export async function getLatestInterviews(
     .limit(limit)
     .get();
 
-  return interviews.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Interview[];
+    return interviews.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Interview[];
+  }
+  catch(e) {
+    return null;
+  }
 }
 
 export async function getInterviewsByUserId(
   userId: string
 ): Promise<Interview[] | null> {
-  const interviews = await db
+  try {
+    const interviews = await db
     .collection("interviews")
     .where("userId", "==", userId)
     .orderBy("createdAt", "desc")
     .get();
 
-  return interviews.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Interview[];
+    return interviews.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Interview[];
+  } catch(e){
+    return null;
+  }
 }
