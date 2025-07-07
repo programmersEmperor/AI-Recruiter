@@ -3,8 +3,6 @@ import { redirect } from "next/navigation";
 
 import Agent from "@/components/agent";
 import { getRandomInterviewCover } from "@/lib/utils";
-import { dummyInterviews } from "../../../../../constants";
-import { number } from "zod";
 
 import {
   getFeedbackByInterviewId,
