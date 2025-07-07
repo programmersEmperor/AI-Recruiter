@@ -4,8 +4,9 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import DisplayTechStack from './displayTechStack';
+import { getFeedbackByInterviewId } from '@/lib/actions/general.action';
 
-const InterviewCard = ({
+const InterviewCard = async ({
     id, 
     userId,
     role,
@@ -13,11 +14,14 @@ const InterviewCard = ({
     type,
     createdAt
 }: InterviewCardProps)=>{
-    const feedback = null as Feedback | null;
+    const feedback: Feedback | null = userId && id
+      ? await getFeedbackByInterviewId({
+          interviewId: id,
+          userId,
+        })
+      : null; 
     const normalizedType = /mix/gi.test(type) ? 'Mixed': type;
     const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format('MMM D, YYYY')
-
-    console.log('userId', userId);
 
     return <div className='card-border w-[360px] min-h-96 max-sm:w-full '>
         <div className="card-interview">

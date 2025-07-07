@@ -1,6 +1,5 @@
 'use server'; 
 
-import { FirebaseError } from "firebase/app";
 import { db, auth } from "../../../firebase/admin";
 import { cookies } from "next/headers";
 
@@ -26,11 +25,11 @@ export async function signUp ({uid, email, name}: SignUpParams){
             message: "Account created succssfully"
         }
     }
-    catch(e: any){
+    catch(e){
         console.error('Error Creating User', e);
         return {
             success: false,
-            message: e.message
+            message: (e as Error).message
         }
     }
 }
@@ -69,11 +68,11 @@ export async function signIn(params: SignInParams) {
             message: "Sign in successfully"
         }
         
-    } catch (e: any) {
+    } catch (e) {
         console.error('Error Sign In User', e);
         return {
             success: false,
-            message: e.message
+            message: (e as Error).message
         }
     }
 }
@@ -103,7 +102,7 @@ export async function getCurrentUser() : Promise<User | null> {
 
 
 
-    } catch(e: any){
+    } catch(e) {
         return null;
     }
 }
