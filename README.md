@@ -12,7 +12,8 @@
     <img src="https://img.shields.io/badge/-Firebase-black?style=for-the-badge&logoColor=white&logo=firebase&color=DD2C00" alt="firebase" />
   </div>
 
-  <h3 align="center"> A job interview preparation platform powered by AI Voice agents</h3>
+
+  <h3 align="center"> A job interview preparation platform powered by AI Voice agents <a  href="https://ai-recruiter-tawny.vercel.app" target="_blank">See Demo</a></h3>
 
 </div>
 
@@ -23,8 +24,7 @@
 3. 🔋 [Features](#features)
 4. 🤸 [Quick Start](#quick-start)
 5. 🕸️ [Snippets (Code to Copy)](#snippets)
-6. 🔗 [Assets](#links)
-7. 🚀 [More](#more)
+
 
 
 ## <a name="introduction">🤖 Introduction</a>
@@ -466,7 +466,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 </details>
 
 <details>
-<summary><code>lib/utils.ts</code></summary>
+<summary><code>src/lib/utils.ts</code></summary>
 
 ```javascript
 import { interviewCovers, mappings } from "@/constants";
@@ -543,7 +543,7 @@ export const getRandomInterviewCover = () => {
 </details>
 
 <details>
-<summary><code>Generate feedback prompt (lib/actions/general.action.ts):</code></summary>
+<summary><code>Generate feedback prompt (src/lib/actions/general.action.ts):</code></summary>
 
 ```javascript
 prompt: `
@@ -565,7 +565,7 @@ system:
 </details>
 
 <details>
-<summary><code>Display feedback (app/(root)/interview/[id]/feedback/page.tsx):</code></summary>
+<summary><code>Display feedback (src/app/(root)/interview/[id]/feedback/page.tsx):</code></summary>
 
 ```javascript
     <section className="section-feedback">
